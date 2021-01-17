@@ -1,5 +1,7 @@
 const Yup = require('yup');
 
+const AppError = require('../../../errors/AppError');
+
 const createValidator = Yup.object().shape({
   title: Yup.string().required().min(3).max(256),
   price: Yup.number().required(),
