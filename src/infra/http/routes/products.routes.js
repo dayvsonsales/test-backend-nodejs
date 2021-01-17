@@ -5,6 +5,9 @@ const DeleteProductService = require('../../../services/DeleteProductService');
 const ListProductService = require('../../../services/ListProductService');
 const UpdateProductService = require('../../../services/UpdateProductService');
 
+const AssociateCategoryController = require('../controllers/AssociateCategoryController');
+const AssociateCategoryProductService = require('../../../services/AssociateCategoryProductService');
+
 const ProductsController = require('../controllers/ProductsController');
 
 const ProductRepository = require('../../mongodb/repositories/ProductRepository');
@@ -19,11 +22,19 @@ const productsController = new ProductsController(
   new DeleteProductService(productRepository),
 );
 
+const associateCategoryController = new AssociateCategoryController(
+  new AssociateCategoryProductService(productRepository),
+);
+
 productsRouter.get('/', (request, response) =>
   productsController.index(request, response),
 );
 productsRouter.get('/:id', (request, response) =>
   productsController.show(request, response),
+);
+
+productsRouter.post('/associate/:id', (request, response) =>
+  associateCategoryController.create(request, response),
 );
 
 productsRouter.post('/', (request, response) =>
