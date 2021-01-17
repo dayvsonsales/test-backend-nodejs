@@ -9,6 +9,6 @@ RUN npm run build
 
 RUN chmod +x entrypoint.sh
 
-COPY .env /app/dist
+COPY prettier.config.js .env* /app/dist/
 
 ENTRYPOINT ["./entrypoint.sh"]
