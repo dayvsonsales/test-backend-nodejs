@@ -56,68 +56,101 @@ tests (unit tests)
 
 ## Routes
 
-```
-GET /products - list all products
-```
+**Find all products**
 
 ```
-GET /products/:id - shows a single product with a given id
+GET /products
 ```
 
+**Shows a single product with a given id**
+
 ```
-POST /products - create a product using a given JSON with { title, description, categories, price }
+GET /products/:id
+```
+
+**Create a product using a given JSON with { title, description, categories, price }**
+
+```
+POST /products
+```
 
 All fields are required and categories is not an array, instead is a string with categories separated by commas.
 
 Example:
 
+```javascript
 {
 	"title": "Redmi Note 8",
 	"description": "A good smartphone",
 	"price": 800,
 	"categories": "smartphone,newgeneration"
 }
-
 ```
 
+**Updates a product**
+
 ```
-PUT /products/:id - updates a product
+PUT /products/:id
+```
 
 Pass a JSON body. Example:
 
+```javascript
 {
 	"title": "Xiaomi Redmi Note 8",
   "description": "Celular",
   "price": 1200
 }
-
 ```
 
-```
-DELETE /products/:id - delete a product with a given id
-```
+**Delete a product with a given id**
 
 ```
-POST /products/associate/:id - associate a single category to a product
+DELETE /products/:id
+```
+
+**Associate a single category to a product**
+
+```
+POST /products/associate/:id
+```
 
 Pass a JSON body containing a field category. Example:
 
+```javascript
 {
   "category": "smartphone"
 }
-
 ```
 
+**Find products by a title or category**
+
 ```
-GET /products?query={category,title} - find products by a title or category
+GET /products?query={category,title}
+
+```
 
 Example:
 
-GET /products?query=Celular
+`GET /products?query=Celular`
 
 Or
 
-GET /products?query=smartphone,redmi
+`GET /products?query=smartphone,redmi`
 
 This query is case insensitive. You can search for more than one category, using commas between categories.
-```
+
+**Possible Status Code**
+
+- HTTP 200 - Everything worked like a charm
+- HTTP 400 - Bad request (a request validation failed; a message with details is given)
+- HTTP 404 - A product could not be found (a not found message is given)
+- HTTP 500 - Something went wrong (a internal server error is given to user)
+
+## Project Decisions
+
+- I chose to not put a cache in queries. The queries used in this simple app is too simple and a cache here would be to overkill and just to show that I know how to use cache (and maybe the find methods in MongoDB were be useless), so even I implemented a Redis cache provider, I decided to not use it.
+
+- I decided to use embedded documents instead of referencing due to the time that I had to complete the challenge (I have no examples of this in my machine to lookup)
+
+- I decided to use csv-like to insert categories because it was easier to query
