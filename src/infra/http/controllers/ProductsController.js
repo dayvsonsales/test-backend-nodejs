@@ -1,4 +1,5 @@
 const Yup = require('yup');
+const isValidObjectId = require('mongoose').isValidObjectId;
 
 const AppError = require('../../../errors/AppError');
 
@@ -76,6 +77,10 @@ class ProductsController {
 
     const { id } = request.params;
 
+    if (!isValidObjectId(id)) {
+      throw new AppError('Invalid id', 400);
+    }
+
     const { title, description, price } = product;
 
     let { categories } = request.body;
@@ -99,6 +104,10 @@ class ProductsController {
   async delete(request, response) {
     const { id } = request.params;
 
+    if (!isValidObjectId(id)) {
+      throw new AppError('Invalid id', 400);
+    }
+
     const data = await this.deleteProductService.execute(id);
 
     return response.json(data);
@@ -106,6 +115,11 @@ class ProductsController {
 
   async show(request, response) {
     const { id } = request.params;
+
+    if (!isValidObjectId(id)) {
+      throw new AppError('Invalid id', 400);
+    }
+
     const product = await this.listProductService.findById(id);
 
     if (!product) {

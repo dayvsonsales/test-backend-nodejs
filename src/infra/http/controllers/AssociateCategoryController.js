@@ -1,4 +1,7 @@
 const Yup = require('yup');
+const isValidObjectId = require('mongoose').isValidObjectId;
+
+const AppError = require('../../../errors/AppError');
 
 const validator = Yup.object().shape({
   category: Yup.string().required(),
@@ -11,6 +14,10 @@ class AssociateCategoryController {
 
   async create(request, response) {
     const { id } = request.params;
+
+    if (!isValidObjectId(id)) {
+      throw new AppError('Invalid id', 400);
+    }
 
     const categoryObject = validator.validateSync(request.body, {
       abortEarly: false,
