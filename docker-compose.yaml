@@ -30,6 +30,5 @@ services:
       REDIS_PORT: 6379
       CACHE_RESET_TIME: 1800
       MONGO_CONNECTION: mongodb://db/products_db
-      MONGO_DEBUG: true
 volumes:
   db_data: {}
