@@ -154,3 +154,5 @@ This query is case insensitive. You can search for more than one category, using
 - I decided to use embedded documents instead of referencing due to the time that I had to complete the challenge (I have no examples of this in my machine to lookup)
 
 - I decided to use csv-like to insert categories because it was easier to query
+
+- I'm not too comfortable with MongoDB (the last time I used it was 2015, so a long time). But I still remember something, so I decided to use it even being a complete noob at this time.
