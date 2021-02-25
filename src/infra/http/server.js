@@ -25,17 +25,17 @@ app.use((err, request, response, _) => {
   if (err instanceof AppError) {
     return response
       .status(err.statusCode)
-      .json({ status: 'error', message: err.message });
+      .json({ success: false, err: err.message });
   }
 
   if (err instanceof ValidationError) {
     if (err.errors && err.errors.length > 1) {
       return response
         .status(400)
-        .json({ status: 'error', message: JSON.stringify(err.errors) });
+        .json({ success: false, err: JSON.stringify(err.errors) });
     }
 
-    return response.status(400).json({ status: 'error', message: err.message });
+    return response.status(400).json({ success: false, err: err.message });
   }
 
   logger.error(err);

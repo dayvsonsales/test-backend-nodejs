@@ -1,24 +1,25 @@
-const AppError = require('../errors/AppError');
+const ProductRepository = require('../infra/mongodb/repositories/ProductRepository');
 
-class AssociateCategoryProductService {
-  constructor(productRepository) {
-    this.productRepository = productRepository;
-  }
+const execute = (id, category) => {
+  const productRepository = new ProductRepository();
 
-  async execute(id, category) {
-    const exists = await this.productRepository.findById(id);
+  return new Promise((resolve, reject) => {
+    productRepository
+      .findById(id)
+      .then(product => {
+        if (!product) {
+          reject('Product not found');
+        } else {
+          productRepository
+            .associateCategory(id, category)
+            .then(data => {
+              resolve(data);
+            })
+            .catch(err => reject(err));
+        }
+      })
+      .catch(err => reject(err));
+  });
+};
 
-    if (!exists) {
-      throw new AppError('Product not found', 404);
-    }
-
-    const product = await this.productRepository.associateCategory(
-      id,
-      category,
-    );
-
-    return product;
-  }
-}
-
-module.exports = AssociateCategoryProductService;
+module.exports = { execute };
